@@ -2,32 +2,25 @@ def project = 'NetarchiveSuite'
 
 def giturl = 'https://github.com/netarchivesuite/netarchivesuite/'
 
-def branchBuilds = ['master']
+def branchBuilds = ['master', 'NAS-2383']
 
+branchBuilds.each {
+    def branch = it
+    job(type: Maven) {
+        name "NetarchiveSuite-${branch}"
+        description "Branch ${branch} build"
+        scm {
+            git("https://github.com/netarchivesuite/netarchivesuite.git", branch)
+        }
+        jdk 'java8'
+        mavenInstallation 'maven3.2'
+        goals "clean install -PfullTest"
+        triggers {
+            githubPush()
+        }
 
-def it = 'master'
-//branchBuilds.each {
-job {
-    name '${project}-${it}'
-    description 'Default build on the branch ${it} branch'
-    scm {
-        git {
-            remote {
-                url($ { giturl }, $ { it })
-            }
+        publishers {
+            mailer('', true, true)
         }
     }
-    steps {
-        maven("clean install -PfullTest")
-    }
-//    triggers {
-//        githubPush()
-//    }
-//    jdk('java8')
-
-//    mavenInstallation('maven3.2')
-//    publishers {
-//        mailer('', false, true)
-//    }
-//    }
 }
