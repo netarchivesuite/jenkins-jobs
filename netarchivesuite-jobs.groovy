@@ -11,6 +11,46 @@ branchBuilds.each {
         scm {
             git(giturl, branch)
         }
-        goals "clean install -PfullTest"
     }
 }
+
+job(type: Maven) {
+    using nas
+    name '${nas}-sonar-dsl'
+    description "Full build with publishing off code analysis to SBForge Sonar"
+
+    triggers {
+        hudson.triggers.TimerTrigger('@midnight')
+    }
+
+    configure { project ->
+        project / publishers << 'hudson.plugins.sonar.SonarPublisher' {
+            jdk('(Inherit From Job)')
+            branch()
+            language()
+            mavenOpts()
+            jobAdditionalProperties()
+            settings(class: 'jenkins.mvn.DefaultSettingsProvider')
+            globalSettings(class: 'jenkins.mvn.DefaultGlobalSettingsProvider')
+            usePrivateRepository(false)
+        }
+    }
+}
+
+/**job(type: Maven) {
+    using nas
+    name '${nas}-system-test'
+    description "Check out the latest version from github at midnight and:\n" +
+            "<ul>\n" +
+            "<li>Creates a release package and scp's it to the test system (with timestamp = svn revision)\n" +
+            "<li>Starts the test system.\n" +
+            "<li>Runs the system tests. \n" +
+            "</ul>\n" +
+            "  <b>Target: mvn clean install -PsystemTest -rf integration-test</b>  "
+
+    goals "clean install -PsystemTest -rf integration-test"
+
+    triggers {
+        timerTrigger('@midnight')
+    }
+}  */
