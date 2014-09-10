@@ -19,21 +19,12 @@ job(type: Maven) {
     name '${nas}-sonar-dsl'
     description "Full build with publishing off code analysis to SBForge Sonar"
 
-    triggers {
-        hudson.triggers.TimerTrigger('@midnight')
-    }
-
-    configure { project ->
-        project / publishers << 'hudson.plugins.sonar.SonarPublisher' {
-            jdk('(Inherit From Job)')
-            branch()
-            language()
-            mavenOpts()
-            jobAdditionalProperties()
-            settings(class: 'jenkins.mvn.DefaultSettingsProvider')
-            globalSettings(class: 'jenkins.mvn.DefaultGlobalSettingsProvider')
-            usePrivateRepository(false)
+    configure { node ->
+        configureScm(node)
+        triggers {
+            'hudson.triggers.TimerTrigger'.spec = '15 13 * * *'
         }
+        goals = 'sonar:sonar'
     }
 }
 
