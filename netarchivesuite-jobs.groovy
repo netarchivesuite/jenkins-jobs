@@ -22,7 +22,7 @@ job(type: Maven) {
     configure { node ->
         configureScm(node)
         triggers {
-            'hudson.triggers.TimerTrigger'.spec = '15 13 * * *'
+            'hudson.triggers.TimerTrigger'.spec = '@midnight'
         }
         goals = 'sonar:sonar'
     }
