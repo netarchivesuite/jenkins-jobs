@@ -15,8 +15,7 @@ branchBuilds.each {
         goals "clean test -PfullTest"
 
         configure { job ->
-            def publishers = job / publishers
-            publishers.setValue('')
+            (job / publishers).setValue('')
         }
     }
 }
@@ -26,9 +25,14 @@ job(type: Maven) {
     name "${nas}-sonar"
     description "Full build with publishing of code analysis to SBForge Sonar"
 
+    configure { job ->
+        (job / triggers).setValue('')
+    }
     triggers {
         cron('0 0 * * *')
     }
+
+
     configure { project ->
         project / publishers << 'hudson.plugins.sonar.SonarPublisher' {
             jdk('(Inherit From Job)')
@@ -56,6 +60,10 @@ job(type: Maven) {
 
     goals "clean install -PsystemTest -rf integration-test"
 
+
+    configure { job ->
+        (job / triggers).setValue('')
+    }
     triggers {
         cron('0 0 * * *')
     }
