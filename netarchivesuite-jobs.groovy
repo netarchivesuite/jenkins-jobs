@@ -1,6 +1,6 @@
 def nas = 'NetarchiveSuite'
 def giturl = 'https://github.com/netarchivesuite/netarchivesuite.git'
-def branchBuilds = ['NAS-2383', 'NAS-2124']
+def branchBuilds = ['NAS-2383', 'NAS-2124', 'H1']
 
 branchBuilds.each {
     def branch = it
@@ -21,14 +21,14 @@ job(type: Maven) {
 
     configure { node ->
         configureScm(node)
-        triggers {
+/**            triggers {
             'hudson.triggers.TimerTrigger'.spec = '@midnight'
-        }
+        } */
         goals = 'sonar:sonar'
     }
 }
 
-/**job(type: Maven) {
+job(type: Maven) {
     using nas
     name '${nas}-system-test'
     description "Check out the latest version from github at midnight and:\n" +
@@ -41,7 +41,7 @@ job(type: Maven) {
 
     goals "clean install -PsystemTest -rf integration-test"
 
-    triggers {
+/**    triggers {
         timerTrigger('@midnight')
-    }
-}  */
+    } */
+}
