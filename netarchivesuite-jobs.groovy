@@ -11,26 +11,29 @@ branchBuilds.each {
         scm {
             git(giturl, branch)
         }
+
+        goals "clean test -PfullTest"
+
+        publishers {
+            archiveArtifacts ''
+        }
     }
 }
 
 job(type: Maven) {
     using nas
-    name '${nas}-sonar-dsl'
+    name "${nas}-sonar-dsl"
     description "Full build with publishing off code analysis to SBForge Sonar"
 
-    configure { node ->
-        configureScm(node)
-/**            triggers {
-            'hudson.triggers.TimerTrigger'.spec = '@midnight'
-        } */
-        goals = 'sonar:sonar'
+    triggers {
+        cron('0 0 * * *')
     }
+    goals = 'sonar:sonar'
 }
 
 job(type: Maven) {
     using nas
-    name '${nas}-system-test'
+    name "${nas}-system-test"
     description "Check out the latest version from github at midnight and:\n" +
             "<ul>\n" +
             "<li>Creates a release package and scp's it to the test system (with timestamp = svn revision)\n" +
@@ -41,7 +44,7 @@ job(type: Maven) {
 
     goals "clean install -PsystemTest -rf integration-test"
 
-/**    triggers {
-        timerTrigger('@midnight')
-    } */
+    triggers {
+        cron('0 0 * * *')
+    }
 }
