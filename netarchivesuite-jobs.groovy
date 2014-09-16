@@ -54,9 +54,9 @@ job(type: Maven) {
             "<li>Starts the test system.\n" +
             "<li>Runs the system tests. \n" +
             "</ul>\n" +
-            "  <b>Target: mvn clean install -PsystemTest -rf integration-test</b>  "
+            "  <b>Target: mvn clean install -PsystemTest</b>  "
 
-    goals "clean integration-test -PsystemTest -rf integration-test"
+    goals "clean integration-test -PsystemTest"
 
     triggers {
         cron('0 0 * * *')
