@@ -34,6 +34,8 @@ job(type: Maven) {
     configure { project ->
         project / publishers << 'hudson.plugins.sonar.SonarPublisher' {
             jdk('(Inherit From Job)')
+
+
             branch()
             language()
             mavenOpts()
@@ -72,8 +74,8 @@ job(type: Maven) {
     name "${nas}-publish-artifacts"
     description "Publishes NAS artifacts if the system test passes."
 
-    goals "clean deploy -PskipTests"
+    goals "clean deploy -DskipTests"
     publishers {
-        archiveArtifacts 'deploy/releasezipball/target/NetarchiveSuite*.zip'
+        archiveArtifacts 'deploy/distribution/target/NetarchiveSuite*.zip'
     }
 }
