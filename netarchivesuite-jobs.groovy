@@ -25,7 +25,7 @@ job(type: Maven) {
     name "${nas}"
     description "Build, test and deploy master"
     scm {
-        git(giturl)
+        git(giturl, 'master')
     }
     triggers {
         githubPush()
