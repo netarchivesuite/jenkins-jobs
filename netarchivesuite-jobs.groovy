@@ -1,7 +1,7 @@
 def nas = 'NetarchiveSuite'
 def template = nas+'-template'
 def giturl = 'https://github.com/netarchivesuite/netarchivesuite.git'
-def branchBuilds = ['master', 'h3']
+def branchBuilds = ['h3']
 
 branchBuilds.each {
     def branch = it
@@ -18,6 +18,20 @@ branchBuilds.each {
 
         goals "clean test -PfullTest"
     }
+}
+
+job(type: Maven) {
+    using template
+    name "${nas}"
+    description "Build, test and deploy master"
+    scm {
+        git(giturl)
+    }
+    triggers {
+        githubPush()
+    }
+
+    goals "clean deploy -PfullTest"
 }
 
 job(type: Maven) {
