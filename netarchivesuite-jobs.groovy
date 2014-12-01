@@ -1,7 +1,7 @@
 def nas = 'NetarchiveSuite'
 def template = nas+'-template'
 def giturl = 'https://github.com/netarchivesuite/netarchivesuite.git'
-def branchBuilds = ['h3', 'NAS-2385']
+def branchBuilds = ['h3']
 
 branchBuilds.each {
     def branch = it
