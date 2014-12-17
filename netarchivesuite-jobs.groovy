@@ -64,15 +64,15 @@ job(type: Maven) {
 job(type: Maven) {
     using template
     name "${nas}-system-test"
-    description "Check out the latest version from github at midnight and:\n" +
+    description
             "<ul>\n" +
-            "<li>Creates a release package and scp's it to the test system (with timestamp = svn revision)\n" +
+            "<li>Deploys the newest NetarchiveSuite zip SNAPSHOT in the m2 repository to the test system under the devel user.\n" +
             "<li>Starts the test system.\n" +
             "<li>Runs the system tests. \n" +
             "</ul>\n" +
-            "  <b>Target: mvn clean install -PsystemTest</b>  "
+            "  <b>Target: mvn clean install -PsystemTest -rf :system-test</b>  "
 
-    goals "clean integration-test -PsystemTest"
+    goals "clean integration-test -PsystemTest -rf :system-test"
 
     triggers {
         cron('0 0 * * *')
