@@ -34,7 +34,7 @@ job(type: Maven) {
     goals "clean deploy -PfullTest"
 }
 
-job(type: Maven) {
+/**job(type: Maven) {
     using template
     name "${nas}-sonar"
     description "Full build with publishing of code analysis to SBForge Sonar"
@@ -59,7 +59,7 @@ job(type: Maven) {
             usePrivateRepository(false)
         }
     }
-}
+} */
 
 job(type: Maven) {
     using template
