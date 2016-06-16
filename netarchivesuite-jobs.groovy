@@ -93,3 +93,19 @@ job(type: Maven) {
         archiveArtifacts 'deploy/distribution/target/NetarchiveSuite*.zip'
     }
 }
+
+
+
+job(type: Maven) {
+    using template
+    name "${nas}-webdanica"
+    description "Build, test and deploy master"
+    scm {
+        git('https://github.com/netarchivesuite/webdanica', 'master')
+    }
+    triggers {
+        githubPush()
+    }
+
+    goals "clean deploy -PfullTest"
+}
