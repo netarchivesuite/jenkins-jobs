@@ -101,7 +101,7 @@ job(type: Maven) {
     name "${nas}-webdanica"
     description "Build, test and deploy master"
     scm {
-        git('https://github.com/netarchivesuite/webdanica', 'master')
+        git('https://github.com/netarchivesuite/webdanica.git', 'master')
     }
     triggers {
         githubPush()
